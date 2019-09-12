@@ -47,6 +47,13 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/images/bg/backyard.png
+    - assets/images/bg/lose-splash.png
+    - assets/images/branding/title.png
+    - assets/images/ui/dialog-credits.png
+    - assets/images/ui/dialog-help.png
+    - assets/images/ui/icon-credits.png
+    - assets/images/ui/icon-help.png
+    - assets/images/ui/start-button.png
     - assets/images/flies/agile-fly-1.png
     - assets/images/flies/agile-fly-2.png
     - assets/images/flies/agile-fly-dead.png

@@ -11,6 +11,13 @@ Future main() async {
   await flameUtil.setOrientation(DeviceOrientation.portraitUp);
   Flame.images.loadAll(<String>[
     'bg/backyard.png',
+    'bg/lose-splash.png',
+    'branding/title.png',
+    'ui/dialog-credits.png',
+    'ui/dialog-help.png',
+    'ui/icon-credits.png',
+    'ui/icon-help.png',
+    'ui/start-button.png',
     'flies/agile-fly-1.png',
     'flies/agile-fly-2.png',
     'flies/agile-fly-dead.png',
