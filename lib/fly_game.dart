@@ -115,6 +115,7 @@ class FlyGame extends Game {
       }
     }
     if (!isHandled) {
+      bool didHitAFly = false;
       files.forEach((Fly fly) {
         if (fly.flyRect.contains(d.globalPosition)) {
           nowFly = fly;
@@ -125,6 +126,10 @@ class FlyGame extends Game {
         // print('111');
         nowFly.onTapDown();
         isHandled = true;
+        didHitAFly = true;
+      }
+      if (activeView == View.playing && !didHitAFly) {
+        activeView = View.lost;
       }
     }
   }
