@@ -12,8 +12,10 @@ import 'package:good_game/components/house_fly.dart';
 import 'package:good_game/components/hungry_fly.dart';
 import 'package:good_game/components/macho_fly.dart';
 import 'package:good_game/components/start_button.dart';
+import 'package:good_game/controllers/fly_spawner.dart';
 import 'package:good_game/view.dart';
 import 'package:good_game/views/home_view.dart';
+import 'package:good_game/views/lost_view.dart';
 
 class FlyGame extends Game {
   Size screenSize;
@@ -25,7 +27,10 @@ class FlyGame extends Game {
 
   View activeView = View.home;
   HomeView homeView;
+  LostView lostView;
   StartButton startButton;
+
+  FlySpawner spawner;
 
   FlyGame() {
     initialize();
@@ -36,10 +41,12 @@ class FlyGame extends Game {
     rnd = Random();
     resize(await Flame.util.initialDimensions());
 
+    spawner = FlySpawner(this);
     background = Backyard(this);
     homeView = HomeView(this);
+    lostView = LostView(this);
     startButton = StartButton(this);
-    spawnFly();
+    // spawnFly();
   }
 
   void spawnFly() {
@@ -74,6 +81,9 @@ class FlyGame extends Game {
     if (activeView == View.home || activeView == View.lost) {
       startButton.render(canvas);
     }
+    if (activeView == View.lost) {
+      lostView.render(canvas);
+    }
     // double screenCenterX = screenSize.width / 2;
     // double screenCenterY = screenSize.height / 2;
     // Rect boxRect = Rect.fromLTWH(
@@ -96,6 +106,7 @@ class FlyGame extends Game {
   void update(double t) {
     files.forEach((Fly fly) => fly.update(t));
     files.removeWhere((Fly fly) => fly.isOffScreen);
+    spawner.update(t);
   }
 
   void resize(Size size) {
