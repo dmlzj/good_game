@@ -11,6 +11,9 @@ import 'package:good_game/components/fly.dart';
 import 'package:good_game/components/house_fly.dart';
 import 'package:good_game/components/hungry_fly.dart';
 import 'package:good_game/components/macho_fly.dart';
+import 'package:good_game/components/start_button.dart';
+import 'package:good_game/view.dart';
+import 'package:good_game/views/home_view.dart';
 
 class FlyGame extends Game {
   Size screenSize;
@@ -19,6 +22,10 @@ class FlyGame extends Game {
   List<Fly> files;
   Random rnd;
   Backyard background;
+
+  View activeView = View.home;
+  HomeView homeView;
+  StartButton startButton;
 
   FlyGame() {
     initialize();
@@ -30,6 +37,8 @@ class FlyGame extends Game {
     resize(await Flame.util.initialDimensions());
 
     background = Backyard(this);
+    homeView = HomeView(this);
+    startButton = StartButton(this);
     spawnFly();
   }
 
@@ -39,7 +48,7 @@ class FlyGame extends Game {
 
     switch (rnd.nextInt(5)) {
       case 0:
-        files.add(HouseFly(this, x, y));    
+        files.add(HouseFly(this, x, y));
         break;
       case 1:
         files.add(DroolerFly(this, x, y));
@@ -55,12 +64,16 @@ class FlyGame extends Game {
         break;
       default:
     }
-    
   }
+
   @override
   void render(Canvas canvas) {
     background.render(canvas);
     files.forEach((Fly fly) => fly.render(canvas));
+    if (activeView == View.home) homeView.render(canvas);
+    if (activeView == View.home || activeView == View.lost) {
+      startButton.render(canvas);
+    }
     // double screenCenterX = screenSize.width / 2;
     // double screenCenterY = screenSize.height / 2;
     // Rect boxRect = Rect.fromLTWH(
@@ -75,7 +88,7 @@ class FlyGame extends Game {
     // } else {
     //   boxPaint.color = Colors.black;
     // }
-    
+
     // canvas.drawRect(boxRect, boxPaint);
   }
 
@@ -92,17 +105,27 @@ class FlyGame extends Game {
   }
 
   void onTapDown(TapDownDetails d) {
-    
+    bool isHandled = false;
     Fly nowFly;
-    files.forEach((Fly fly) {
-      if (fly.flyRect.contains(d.globalPosition)) {
-        nowFly = fly;    
-        // files.remove(fly);
+
+    if (!isHandled && startButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.home || activeView == View.lost) {
+        startButton.onTapDown();
+        isHandled = true;
       }
-    });
-    if (nowFly != null) {
-      // print('111');
-      nowFly.onTapDown();
+    }
+    if (!isHandled) {
+      files.forEach((Fly fly) {
+        if (fly.flyRect.contains(d.globalPosition)) {
+          nowFly = fly;
+          // files.remove(fly);
+        }
+      });
+      if (nowFly != null) {
+        // print('111');
+        nowFly.onTapDown();
+        isHandled = true;
+      }
     }
   }
 }

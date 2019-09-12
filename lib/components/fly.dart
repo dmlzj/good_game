@@ -23,7 +23,7 @@ class Fly {
     if (isDead) {
       deadSprite.renderRect(c, flyRect.inflate(2));
     } else {
-      flyingSprite[flyingSpriteIndex.toInt()].renderRect(c, flyRect.inflate(2));
+      flyingSprite[(flyingSpriteIndex.toInt() < 2 ? flyingSpriteIndex.toInt() : 0)].renderRect(c, flyRect.inflate(2));
     }
     // c.drawRect(flyRect, flyPaint);
   }
